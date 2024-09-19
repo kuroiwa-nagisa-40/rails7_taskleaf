@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  belongs_to :user
   validates :title, presence: true
   validates :title, length: {maximum:30}
   validate :validate_title_not_include_comma
