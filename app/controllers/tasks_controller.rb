@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+before_action :set_task, only: [:show, :edit, :update, :destroy]
+
   def index
-    @tasks = current_user.tasks
+    @tasks = current_user.tasks.recent
   end
 
   def show
-    @task = current_user.tasks.find(params[:id])
   end
 
   def new
@@ -22,24 +23,25 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.tasks.find(params[:id])
   end
 
   def update
-    task = current_user.tasks.find(params[:id])
-    task.update!(task_params)
-    redirect_to tasks_path, notice: "タスク「#{task.title}」を編集しました！"
+    @task.update!(task_params)
+    redirect_to tasks_path, notice: "タスク「#{@task.title}」を編集しました！"
   end
 
   def destroy
-    task = current_user.tasks.find(params[:id])
-    task.destroy
-    redirect_to tasks_path, notice: "タスク「#{task.title}」を削除しました！", status: :see_other
+    @task.destroy
+    redirect_to tasks_path, notice: "タスク「#{@task.title}」を削除しました！", status: :see_other
   end
 
   private
 
   def task_params
     params.require(:task).permit(:title, :description)
+  end
+
+  def set_task
+    @task = current_user.tasks.find(params[:id])
   end
 end
