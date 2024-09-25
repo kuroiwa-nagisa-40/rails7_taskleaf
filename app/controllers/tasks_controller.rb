@@ -18,7 +18,7 @@ before_action :set_task, only: [:show, :edit, :update, :destroy]
     if @task.save
       redirect_to @task, notice: "タスク「#{@task.title}」を登録しました！"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
