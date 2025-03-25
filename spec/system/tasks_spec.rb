@@ -11,6 +11,7 @@ describe "タスク管理機能", type: :system do
       fill_in "メールアドレス", with: login_user.email
       fill_in "パスワード", with: login_user.password
       click_button "ログインする"
+      expect(page).to have_content "ログインしました！"
     end
 
     shared_examples_for "ユーザAが作成したタスクを表示する" do
@@ -39,10 +40,8 @@ describe "タスク管理機能", type: :system do
         let(:login_user) { user_a }
     
         before do
-          puts "Current Path: #{current_path}"
           # 親の before でログインしているはずなので、ここでタスクページに移動
           visit task_path(task_a)
-          puts "Current Path: #{current_path}"
         end
     
         it_behaves_like "ユーザAが作成したタスクを表示する"
@@ -53,7 +52,6 @@ describe "タスク管理機能", type: :system do
       let(:login_user) {user_a}
 
       before do
-        puts "Current Path: #{current_path}"
         visit new_task_path
         fill_in "task_name", with: task_name
         click_button "登録する"
